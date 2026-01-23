@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:resume_manage_app/features/auth/presentation/screens/signup_screen.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
           child: SingleChildScrollView(
@@ -59,7 +58,9 @@ class _LoginState extends State<Login> {
                 const SizedBox(height: 40),
 
                 /// Login ID / Email
+
                 TextField(
+                  autofocus: true,
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
@@ -98,6 +99,7 @@ class _LoginState extends State<Login> {
 
                 /// Login Button
                 ElevatedButton(
+
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -170,13 +172,21 @@ class _LoginState extends State<Login> {
                 /// Signup Option
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text("Don't have an account? "),
-                    Text(
-                      "Sign Up",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
+                  children: [
+                    const Text("Don't have an account? "),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SignUp()),
+                        );
+                      },
+                      child: const Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -185,7 +195,6 @@ class _LoginState extends State<Login> {
             ),
           ),
         ),
-      ),
     );
   }
 }

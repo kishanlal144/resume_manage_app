@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:resume_manage_app/praveen_test.dart';
-import 'package:resume_manage_app/ui_screens/login.dart';
+import 'package:resume_manage_app/features/auth/presentation/screens/login_screen.dart';
+
 
 void main() {
-  //runApp(const MyApp());
-  runApp(Login());
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const LoginScreen(),
+    );
+  }
 }
