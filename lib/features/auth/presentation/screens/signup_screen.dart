@@ -1,197 +1,177 @@
-import 'package:country_code_text_field/country_code_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_strings.dart';
+import '../../../../core/constants/app_sizes.dart';
+import '../../../../core/widgets/custom_button.dart';
 import 'login_screen.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignUpScreenState extends State<SignUpScreen> {
+
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  String mobileNumber = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 60),
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(AppSizes.padding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
 
-                /// App Logo / Title
-                const Icon(
-                  Icons.person_add_alt_1,
-                  size: 60,
-                  color: Colors.blue,
+              const SizedBox(height: 60),
+
+              const Icon(
+                Icons.person_add_alt_1,
+                size: 60,
+                color: AppColors.primary,
+              ),
+
+              const SizedBox(height: 20),
+
+              const Text(
+                AppStrings.createAccount,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
                 ),
+              ),
 
-                const SizedBox(height: 20),
+              const SizedBox(height: 10),
 
-                const Text(
-                  "Create Account",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue  ,
+              const Text(
+                AppStrings.signUpToStart,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: AppColors.grey),
+              ),
+
+              const SizedBox(height: 30),
+
+              _buildField(
+                controller: nameController,
+                label: AppStrings.enterName,
+                icon: Icons.person,
+              ),
+
+              const SizedBox(height: 20),
+
+              _buildField(
+                controller: emailController,
+                label: AppStrings.enterEmail,
+                icon: Icons.email,
+              ),
+
+              const SizedBox(height: 20),
+
+              IntlPhoneField(
+                decoration: InputDecoration(
+                  labelText: AppStrings.mobileNumber,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppSizes.radius),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppSizes.radius),
+                    borderSide: const BorderSide(color: AppColors.primary),
                   ),
                 ),
+                initialCountryCode: 'IN',
+                onChanged: (phone) {
+                  mobileNumber = phone.completeNumber;
+                },
+              ),
 
-                const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
-                const Text(
-                  "Sign up to get started",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
+              _buildField(
+                controller: passwordController,
+                label: AppStrings.setPassword,
+                icon: Icons.lock,
+                isPassword: true,
+              ),
 
-                const SizedBox(height: 20),
-                //Name
-                TextField(
-                  //autofocus: true,
-                  //controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: "Enter your Name",
-                    // prefixIcon: const Icon(Icons.email, color: Colors.blue),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                ),
+              const SizedBox(height: 20),
 
-                const SizedBox(height: 20),
-                TextField(
-                  //autofocus: true,
-                  //controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: "Enter your Email",
-                    prefixIcon: const Icon(Icons.email, color: Colors.blue),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                ),
+              _buildField(
+                controller: confirmPasswordController,
+                label: AppStrings.reEnterPassword,
+                icon: Icons.lock,
+                isPassword: true,
+              ),
 
+              const SizedBox(height: 30),
 
-                const SizedBox(height: 20),
+              CustomButton(
+                title: AppStrings.signUp,
+                onPressed: () {
+                  // provider.signup(...)
+                },
+              ),
 
-                //mobile number
+              const SizedBox(height: 20),
 
-                IntlPhoneField(
-                  decoration: InputDecoration(
-                    labelText: 'Mobile Number',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                  initialCountryCode: 'IN',
-                  onChanged: (phone) {
-                    print(phone.completeNumber); // +919876543210
-                  },
-                  onCountryChanged: (country) {
-                    print(country.code); // IN, US, UK
-                  },
-                ),
-
-
-                const SizedBox(height: 20),
-                //password
-
-                TextField(
-                  //controller: passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: "Set Password",
-                    prefixIcon: const Icon(Icons.lock, color: Colors.blue),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-                // Re-enter password
-                TextField(
-                  //controller: passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: "Re-Enter Password",
-                    prefixIcon: const Icon(Icons.lock, color: Colors.blue),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-                ElevatedButton(
-
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  onPressed: () {
-                    // Login logic here
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const LoginScreen(),
+                      ),
+                    );
                   },
                   child: const Text(
-                    "Sign Up",
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const LoginScreen()),
-                      );
-                    },
-                    child: const Text(
-                      "Sign In",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    AppStrings.signIn,
+                    style: TextStyle(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
+      ),
+    );
+  }
 
+  Widget _buildField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    bool isPassword = false,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: isPassword,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: AppColors.primary),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppSizes.radius),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppSizes.radius),
+          borderSide: const BorderSide(color: AppColors.primary),
+        ),
+      ),
     );
   }
 }
