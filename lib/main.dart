@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:resume_manage_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:resume_manage_app/splash_screen.dart';
 
 
 void main() {

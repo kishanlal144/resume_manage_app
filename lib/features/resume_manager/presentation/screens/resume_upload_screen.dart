@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:resume_manage_app/features/resume_manager/data/services/resume_api_service.dart';
 import 'package:resume_manage_app/features/resume_manager/presentation/screens/excel_download_screen.dart';
 import 'package:resume_manage_app/features/resume_manager/presentation/widgets/resume_upload_card.dart';
 
@@ -16,7 +20,9 @@ class ResumeUploadScreen extends StatefulWidget {
 
 class _ResumeUploadScreenState extends State<ResumeUploadScreen> {
 
-  List<String> uploadedFiles = [];
+  //List<File> uploadedFiles = [];
+  List<PlatformFile> uploadedFiles = [];
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,13 +69,31 @@ class _ResumeUploadScreenState extends State<ResumeUploadScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                     ),
-                    onPressed: () {
-                      setState(() {
-                        uploadedFiles.add(
-                          "Resume_${uploadedFiles.length + 1}.pdf",
-                        );
-                      });
+                    onPressed: () async {
+
+                      FilePickerResult? result =
+                      await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['pdf'],
+                        allowMultiple: true,
+                        withData: true,
+                      );
+
+                      // if (result != null) {
+                      //   setState(() {
+                      //     uploadedFiles.addAll(
+                      //       result.paths.map((path) => File(path!)).toList(),
+                      //     );
+                      //   });
+                      // }
+                      if (result != null) {
+                        setState(() {
+                          uploadedFiles.addAll(result.files);
+                        });
+                      }
+
                     },
+
                     child: const Text(AppStrings.selectFiles),
                   )
                 ],
@@ -104,7 +128,8 @@ class _ResumeUploadScreenState extends State<ResumeUploadScreen> {
                   //   ),
                   // );
                   return ResumeUploadCard(
-                    fileName: uploadedFiles[index],
+                    //fileName:uploadedFiles[index].path.split('/').last,
+                    fileName: uploadedFiles[index].name,
                     isUploaded: true,
                     onDelete: () {
                       setState(() {
@@ -121,15 +146,24 @@ class _ResumeUploadScreenState extends State<ResumeUploadScreen> {
 
             CustomButton(
               title: AppStrings.generateExcel,
-              onPressed: uploadedFiles.isEmpty ? null : () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const ExcelDownloadScreen(),
-                  ),
-                );
+              onPressed: uploadedFiles.isEmpty
+                  ? null
+                  : () async {
+
+                bool success = await ResumeApiService
+                    .uploadResumes(uploadedFiles);
+
+                if (success) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ExcelDownloadScreen(),
+                    ),
+                  );
+                }
               },
             ),
+
           ],
         ),
       ),
