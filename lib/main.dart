@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:resume_manage_app/features/auth/presentation/screens/login_screen.dart';
-
+import 'package:resume_manage_app/shared/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
